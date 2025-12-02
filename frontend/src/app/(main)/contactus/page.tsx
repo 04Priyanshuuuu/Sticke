@@ -3,6 +3,7 @@ import { Goal } from "./components/Goal";
 import Hero from "./components/Hero";
 import SocialContacts from "./components/SocialContacts";
 import Team from "./components/Team";
+import TechStack from "./components/TechStack";
 
 function page() {
   return (
@@ -13,6 +14,7 @@ function page() {
         <Team />
         <WriteToUs />
         <SocialContacts />
+        <TechStack />
         
       </main>
     </div>
