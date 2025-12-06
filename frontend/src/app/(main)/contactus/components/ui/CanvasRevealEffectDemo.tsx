@@ -8,14 +8,14 @@ export function CanvasRevealEffectDemo() {
   return (
     <>
       <div className="py-20 flex flex-col lg:flex-row items-center justify-center bg-white dark:bg-black w-full gap-4 mx-auto px-8">
-        <Card title="Zero" icon={<AceternityIcon />}>
+        <Card title="zero" icon={<AceternityIcon />}>
           <CanvasRevealEffect
             animationSpeed={5.1}
             containerClassName="bg-emerald-900"
           />
         </Card>
         
-        <Card title="Lucifer" icon={<AceternityIcon />}>
+        <Card title="botLuecifer" icon={<AceternityIcon />}>
           <CanvasRevealEffect
             animationSpeed={3}
             containerClassName="bg-sky-600"

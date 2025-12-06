@@ -63,13 +63,14 @@ export default function TechStack() {
           <span className="text-gray-400 text-sm">Next.js</span>
         </div>
         <div className="flex flex-col items-center">
-          <SiDjango className="text-4xl text-green-500 mb-2" />
-          <span className="text-gray-400 text-sm">Django</span>
-        </div>
-        <div className="flex flex-col items-center">
           <FaPython className="text-4xl text-yellow-400 mb-2" />
           <span className="text-gray-400 text-sm">Python</span>
         </div>
+        <div className="flex flex-col items-center">
+          <SiDjango className="text-4xl text-green-500 mb-2" />
+          <span className="text-gray-400 text-sm">Django</span>
+        </div>
+        
         
 
         <div className="flex flex-col items-center">

@@ -21,7 +21,7 @@ export default function StickerRound() {
   useEffect(() => {
     async function fetchPopular() {
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/stickers/?is_popular=true");
+        const res = await fetch("http://127.0.0.1:8000/api/stickers/?is_popular=true&limit=10");
         const data = await res.json();
         setStickers(data);
       } catch (error) {
@@ -89,6 +89,7 @@ export default function StickerRound() {
   return (
     <section className="relative w-full h-[100vh] bg-black flex flex-col items-center justify-center overflow-hidden">
       {/* Heading stable */}
+      <h1 className="text-[40px] font-bold m-10 ml-5 text-left border-l-4 border-blue-500 pl-4">Trending</h1>
       <h2 className="text-4xl font-bold mb-8 bg-gradient-to-r from-cyan-400 to-purple-500 text-transparent bg-clip-text">
         Popular Stickers
       </h2>

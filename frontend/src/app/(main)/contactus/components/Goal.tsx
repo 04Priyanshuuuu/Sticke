@@ -1,7 +1,7 @@
 "use client";
 import { TextGenerateEffect } from "./ui/text-generate-effect";
 
-const words = `The Goal is to deliver a quality of stickers.`;
+const words = `The Goal is to provide hard copy of your memories,clicks and moments in your hands.`;
 
 export function Goal() {
   return (
