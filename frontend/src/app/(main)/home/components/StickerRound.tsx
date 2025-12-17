@@ -21,7 +21,9 @@ export default function StickerRound() {
   useEffect(() => {
     async function fetchPopular() {
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/stickers/?is_popular=true&limit=10");
+        const res = await fetch(
+          "http://127.0.0.1:8000/api/stickers/?is_popular=true&limit=10"
+        );
         const data = await res.json();
         setStickers(data);
       } catch (error) {
@@ -87,37 +89,41 @@ export default function StickerRound() {
   }, [stickers]);
 
   return (
-    <section className="relative w-full h-[100vh] bg-black flex flex-col items-center justify-center overflow-hidden">
-      {/* Heading stable */}
-      <h1 className="text-[40px] font-bold m-10 ml-5 text-left border-l-4 border-blue-500 pl-4">Trending</h1>
-      <h2 className="text-4xl font-bold mb-8 bg-gradient-to-r from-cyan-400 to-purple-500 text-transparent bg-clip-text">
-        Popular Stickers
-      </h2>
+    <section>
+      <h1 className="text-[40px] font-bold m-10 ml-5 text-left border-l-4 border-blue-500 pl-4">
+        Popular
+      </h1>
+      <div className="relative w-full h-[100vh] bg-black flex flex-col items-center justify-center overflow-hidden">
+        
+        <h2 className="text-4xl font-bold mb-8 bg-gradient-to-r from-cyan-400 to-purple-500 text-transparent bg-clip-text">
+          MAKE IT YOURS
+        </h2>
 
-      {/* 3D Scene */}
-      <div
-        ref={sceneRef}
-        className="relative w-[400px] h-[400px] perspective-[1000px] cursor-grab"
-      >
+        {/* 3D Scene */}
         <div
-          ref={trackRef}
-          className="absolute w-full h-full transition-transform duration-500 [transform-style:preserve-3d] [transform-origin:center_center]"
+          ref={sceneRef}
+          className="relative w-[400px] h-[400px] perspective-[1000px] cursor-grab"
         >
-          {stickers.map((sticker, i) => (
-            <div
-              key={i}
-              className="absolute w-[160px] h-[200px] bg-zinc-900/90 rounded-lg p-2 text-center 
+          <div
+            ref={trackRef}
+            className="absolute w-full h-full transition-transform duration-500 [transform-style:preserve-3d] [transform-origin:center_center]"
+          >
+            {stickers.map((sticker, i) => (
+              <div
+                key={i}
+                className="absolute w-[160px] h-[200px] bg-zinc-900/90 rounded-lg p-2 text-center 
               shadow-[0_10px_25px_rgba(0,0,0,0.6)] hover:scale-105 hover:shadow-[0_0_15px_#00fff7] 
               transition-transform duration-300"
-            >
-              <img
-                src={sticker.image}
-                alt={sticker.name}
-                className="w-full h-[160px] object-cover rounded-md"
-              />
-              <p className="mt-2 text-sm text-gray-300">{sticker.name}</p>
-            </div>
-          ))}
+              >
+                <img
+                  src={sticker.image}
+                  alt={sticker.name}
+                  className="w-full h-[160px] object-cover rounded-md"
+                />
+                <p className="mt-2 text-sm text-gray-300">{sticker.name}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
