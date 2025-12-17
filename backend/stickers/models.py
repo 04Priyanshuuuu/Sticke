@@ -29,6 +29,10 @@ class Sticker(models.Model):
 
     
 
+class CustomSticker(models.Model):
+    image = models.ImageField(upload_to="custom/")
+    price = models.IntegerField(default=40)
+    created_at = models.DateTimeField(auto_now_add=True)
 
  
 

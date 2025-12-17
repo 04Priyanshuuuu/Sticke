@@ -59,7 +59,7 @@ export default function ProfilePage() {
           "http://localhost:8000/api/profiles/dashboard/",
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Token ${token}`,
             },
           }
         );
@@ -67,6 +67,9 @@ export default function ProfilePage() {
         if (!res.ok) throw new Error("Failed to fetch profile");
 
         const data = await res.json();
+
+        console.log("PROFILE RESPONSE:", data);
+        console.log("STATUS:", res.status);
 
         // 🔥 backend list OR object — dono handle
         const profileData = Array.isArray(data) ? data[0] : data;
@@ -128,17 +131,13 @@ export default function ProfilePage() {
   /* ================= SAFE DATE ================= */
 
   const joinedDate =
-    profile.joined_date ||
-    profile.date_joined ||
-    profile.created_at ||
-    null;
+    profile.joined_date || profile.date_joined || profile.created_at || null;
 
   /* ================= UI ================= */
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white px-4 py-8">
       <div className="max-w-5xl mt-24 mx-auto space-y-8">
-
         {/* ===== HEADER ===== */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -152,23 +151,17 @@ export default function ProfilePage() {
               </div>
 
               <div>
-                <h1 className="text-3xl font-bold">
-                  {profile.name} 👋
-                </h1>
+                <h1 className="text-3xl font-bold">{profile.name} 👋</h1>
 
                 <p className="text-gray-400 flex items-center space-x-2 mt-2">
                   <Calendar className="w-4 h-4" />
                   <span>
                     Joined:{" "}
-                    {joinedDate
-                      ? new Date(joinedDate).toDateString()
-                      : "—"}
+                    {joinedDate ? new Date(joinedDate).toDateString() : "—"}
                   </span>
                 </p>
 
-                <p className="text-gray-400 text-sm">
-                  {profile.email}
-                </p>
+                <p className="text-gray-400 text-sm">{profile.email}</p>
               </div>
             </div>
 
@@ -224,12 +217,8 @@ export default function ProfilePage() {
                 className={`bg-gradient-to-br ${stat.color} p-6 rounded-2xl text-white`}
               >
                 <Icon className="w-8 h-8 mb-3 opacity-80" />
-                <div className="text-2xl font-bold">
-                  {stat.value ?? 0}
-                </div>
-                <div className="text-sm opacity-90">
-                  {stat.title}
-                </div>
+                <div className="text-2xl font-bold">{stat.value ?? 0}</div>
+                <div className="text-sm opacity-90">{stat.title}</div>
               </motion.div>
             );
           })}
@@ -237,9 +226,7 @@ export default function ProfilePage() {
 
         {/* ===== RECENT ORDERS ===== */}
         <section className="bg-gray-800/40 p-8 rounded-3xl border border-gray-700/30">
-          <h2 className="text-xl font-semibold mb-6">
-            Recent Orders
-          </h2>
+          <h2 className="text-xl font-semibold mb-6">Recent Orders</h2>
 
           {!profile.orders || profile.orders.length === 0 ? (
             <p className="text-gray-400">No orders found.</p>
@@ -253,9 +240,7 @@ export default function ProfilePage() {
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-semibold">
-                        Order #{order.id}
-                      </h3>
+                      <h3 className="font-semibold">Order #{order.id}</h3>
                       <p className="text-green-400 text-sm mt-1">
                         Status: {order.status}
                       </p>

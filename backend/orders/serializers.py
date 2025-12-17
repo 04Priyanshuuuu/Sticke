@@ -2,14 +2,26 @@ from rest_framework import serializers
 from stickers.serializers import StickerSerializer
 from .models import Order, OrderItem
 
+
 class OrderItemSerializer(serializers.ModelSerializer):
     sticker = StickerSerializer(read_only=True)
+
     class Meta:
         model = OrderItem
         fields = '__all__'
 
+
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
+
+    # 🔥 frontend compatibility fix
+    total_price = serializers.DecimalField(
+        source='total',
+        max_digits=12,
+        decimal_places=2,
+        read_only=True
+    )
+
     class Meta:
         model = Order
         fields = '__all__'

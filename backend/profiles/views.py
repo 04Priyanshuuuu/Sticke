@@ -7,6 +7,7 @@ from orders.models import Order
 from orders.serializers import OrderSerializer
 
 class UserProfileViewSet(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.all()  
     serializer_class = UserProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -19,11 +20,12 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     # ✅ custom endpoint to get full dashboard data
     @action(detail=False, methods=['get'])
     def dashboard(self, request):
-        profile = UserProfile.objects.get(user=request.user)
-        orders = Order.objects.filter(user=request.user).order_by('-created_at')[:5]
+        profile, _ = UserProfile.objects.get_or_create(user=request.user)
+        orders_qs = Order.objects.filter(user=request.user).order_by('-created_at')
+        orders = orders_qs[:5]
 
-        # reward points logic (example)
-        total_orders = orders.count()
+        total_orders = orders_qs.count()  # ✅ correct
+
         reward_points = total_orders * 10
 
         data = {
@@ -33,6 +35,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
             "total_orders": total_orders,
             "reward_points": reward_points,
             "custom_uploads": 3,  # TODO: replace with real model count later
-            "orders": OrderSerializer(orders, many=True).data,
+           "orders": OrderSerializer(orders, many=True, context={"request": request}).data,
+
         }
         return Response(data)

@@ -31,3 +31,6 @@ def create_custom_sticker(request):
     return Response(serializer.errors, status=400)
 
 
+ 
+
+ 

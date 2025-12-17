@@ -5,7 +5,6 @@ import WhyStickers from "./components/WhyStickers";
 import StickerRound from "./components/StickerRound";
 import HowTheyStick from "./components/HowTheyStick";
 import MakeYourOwnSticker from "./components/MakeYourOwnSticker";
-import InstagramGallery from "./components/InstagramGallery";
 import OrderingProcess from "./components/OrderingProcess";
 import WriteToUs from "./components/WriteToUs";
 import OfferBanner from "./components/OfferBanner";
@@ -22,9 +21,9 @@ export default function Home() {
       <MakeYourOwnSticker />
       <WhyStickers />
       <OrderingProcess />
-      <InstagramGallery />
-      <HowTheyStick />
       <WriteToUs />
+      <HowTheyStick />
+      
     </main>
   );
 }
