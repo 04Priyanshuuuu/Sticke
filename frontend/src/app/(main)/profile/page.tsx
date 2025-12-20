@@ -66,16 +66,16 @@ export default function ProfilePage() {
 
         if (!res.ok) throw new Error("Failed to fetch profile");
 
+        console.log("PROFILE STATUS:", res.status);
         const data = await res.json();
-
-        console.log("PROFILE RESPONSE:", data);
-        console.log("STATUS:", res.status);
+        console.log("PROFILE DATA:", data);
 
         // 🔥 backend list OR object — dono handle
         const profileData = Array.isArray(data) ? data[0] : data;
 
         setProfile(profileData);
       } catch (err: any) {
+        console.error("PROFILE FETCH ERROR:", err);
         setError(err.message || "Something went wrong");
       } finally {
         setLoading(false);

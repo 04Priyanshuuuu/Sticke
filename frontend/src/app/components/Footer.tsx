@@ -103,18 +103,13 @@ function Footer() {
           <h4 className="mb-4 text-lg font-semibold text-white">Sticke</h4>
           <ul className="space-y-2 text-sm sm:text-base">
             <li>
-              <a href="/about" className="text-gray-400 hover:text-white">
+              <a href="/contactus" className="text-gray-400 hover:text-white">
                 About
               </a>
             </li>
             <li>
-              <a href="/help-center" className="text-gray-400 hover:text-white">
-                Help Center
-              </a>
-            </li>
-            <li>
               <a
-                href="/terms-of-use"
+                href="/termsofuse"
                 className="text-gray-400 hover:text-white"
               >
                 Terms of Use
@@ -122,15 +117,15 @@ function Footer() {
             </li>
             <li>
               <a
-                href="/privacy-policy"
+                href="/privacypolicy"
                 className="text-gray-400 hover:text-white"
               >
                 Privacy Policy
               </a>
             </li>
             <li>
-              <a href="/jobs" className="text-gray-400 hover:text-white">
-                Jobs
+              <a href="/refundpolicy" className="text-gray-400 hover:text-white">
+                Refund Policy
               </a>
             </li>
           </ul>
@@ -141,12 +136,12 @@ function Footer() {
           <h4 className="mb-4 text-lg font-semibold text-white">Account</h4>
           <ul className="space-y-2 text-sm sm:text-base">
             <li>
-              <a href="/signup" className="text-gray-400 hover:text-white">
+              <a href="/auth/signUp" className="text-gray-400 hover:text-white">
                 Create Account
               </a>
             </li>
             <li>
-              <a href="/login" className="text-gray-400 hover:text-white">
+              <a href="/auth/login" className="text-gray-400 hover:text-white">
                 Log In
               </a>
             </li>

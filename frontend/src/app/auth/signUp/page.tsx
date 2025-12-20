@@ -8,8 +8,6 @@ export default function SignupPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const withCredentials = false; // signup ke liye false rakho
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,119 +22,88 @@ export default function SignupPage() {
     try {
       const res = await fetch("http://localhost:8000/api/auth/register/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: fullName,
           email,
           password,
           password2: confirmPassword,
         }),
-        credentials: withCredentials ? "include" : "omit",
       });
 
       if (res.ok) {
-        setSuccess("Account created successfully!");
-        setTimeout(() => {
-          window.location.replace("/");
-        }, 1000);
+        setSuccess("Account created successfully");
+        setTimeout(() => window.location.replace("/"), 1000);
       } else {
         const data = await res.json();
-        setError(
-          data.password || data.email || data.detail || "Failed to sign up"
-        );
+        setError(data.detail || "Signup failed");
       }
-    } catch (err) {
-      setError("Something went wrong!");
+    } catch {
+      setError("Something went wrong");
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-black">
-      <div className="w-full max-w-md bg-black text-white p-8 rounded-2xl shadow-2xl border border-gray-800">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-3xl font-extrabold tracking-tight">
-            Create Account
-          </h2>
-          <span className="text-sm text-gray-400">Join us today</span>
-        </div>
+    <div className="relative min-h-screen w-full overflow-hidden bg-[#0b0b0f] flex items-center justify-center">
 
-        <form className="space-y-5" onSubmit={handleSubmit}>
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Full Name
-            </label>
-            <input
-              type="text"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              placeholder="John Doe"
-              required
-              className="w-full bg-transparent border border-gray-800 px-4 py-3 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-gray-600"
-            />
-          </div>
+      {/* BLUE BLOB */}
+      <div className="absolute -top-24 -left-24 w-[420px] h-[420px] bg-blue-500/60 rounded-full blur-[140px]" />
 
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              required
-              className="w-full bg-transparent border border-gray-800 px-4 py-3 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-gray-600"
-            />
-          </div>
+      {/* ORANGE BLOB */}
+      <div className="absolute -bottom-24 -right-24 w-[420px] h-[420px] bg-orange-500/60 rounded-full blur-[140px]" />
 
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter password"
-              required
-              className="w-full bg-transparent border border-gray-800 px-4 py-3 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-gray-600"
-            />
-          </div>
+      {/* GLASS CARD */}
+      <div className="relative z-10 w-[420px] rounded-2xl border border-white/10
+                      bg-white/10 backdrop-blur-xl p-8
+                      shadow-[0_0_50px_rgba(0,0,0,0.6)] text-white">
 
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Re-enter password"
-              required
-              className="w-full bg-transparent border border-gray-800 px-4 py-3 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-gray-600"
-            />
-          </div>
+        <h2 className="text-3xl font-bold">Create Account</h2>
+        <p className="text-sm text-gray-300 mt-1">
+          Join the Sticke experience
+        </p>
 
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-          {success && <p className="text-green-500 text-sm">{success}</p>}
+        <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+          <Input label="Full Name" value={fullName} onChange={(e:any)=>setFullName(e.target.value)} />
+          <Input label="Email" type="email" value={email} onChange={(e:any)=>setEmail(e.target.value)} />
+          <Input label="Password" type="password" value={password} onChange={(e:any)=>setPassword(e.target.value)} />
+          <Input label="Confirm Password" type="password" value={confirmPassword} onChange={(e:any)=>setConfirmPassword(e.target.value)} />
+
+          {error && <p className="text-red-400 text-sm">{error}</p>}
+          {success && <p className="text-green-400 text-sm">{success}</p>}
 
           <button
             type="submit"
-            className="w-full py-3 rounded-lg bg-white text-black font-semibold shadow-sm hover:brightness-95 hover:cursor-pointer active:scale-98 transition-transform"
+            className="w-full rounded-xl bg-white text-black py-3 font-semibold
+                       hover:bg-gray-200 transition"
           >
             Create Account
           </button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-gray-500">
+        <p className="mt-6 text-center text-sm text-gray-300">
           Already have an account?{" "}
-          <a href="/auth/login" className="text-gray-200 underline">
+          <a href="/auth/login" className="text-white underline">
             Login
           </a>
-        </div>
+        </p>
       </div>
+    </div>
+  );
+}
+
+function Input({ label, type = "text", value, onChange }: any) {
+  return (
+    <div>
+      <label className="block text-sm mb-1 text-gray-300">{label}</label>
+      <input
+        type={type}
+        value={value}
+        onChange={onChange}
+        required
+        className="w-full rounded-lg bg-white/10 border border-white/10
+                   px-4 py-2.5 text-white
+                   focus:outline-none focus:ring-2 focus:ring-white/20"
+      />
     </div>
   );
 }
