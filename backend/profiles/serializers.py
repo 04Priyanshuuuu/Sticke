@@ -4,5 +4,12 @@ from .models import UserProfile
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ['id', 'user', 'bio', 'profile_image', 'location', 'created_at']
-        read_only_fields = ['user', 'created_at']
+        fields = [
+            "id",
+            "display_name",
+            "bio",
+            "profile_image",
+            "location",
+            "created_at",
+        ]
+        read_only_fields = ["created_at"]

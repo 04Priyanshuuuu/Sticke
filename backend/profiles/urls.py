@@ -1,7 +1,7 @@
-from rest_framework.routers import DefaultRouter
-from .views import UserProfileViewSet
+from django.urls import path
+from .views import dashboard, me
 
-router = DefaultRouter()
-router.register('', UserProfileViewSet, basename='profiles')
-
-urlpatterns = router.urls
+urlpatterns = [
+    path("dashboard/", dashboard),
+    path("me/", me),
+]

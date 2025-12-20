@@ -26,8 +26,9 @@ interface Order {
 interface Profile {
   name: string;
   email: string;
+  bio?: string;
+  profile_image?: string;
   joined_date?: string;
-  date_joined?: string;
   created_at?: string;
   total_orders: number;
   custom_uploads: number;
@@ -38,7 +39,7 @@ interface Profile {
 /* ================= COMPONENT ================= */
 
 export default function ProfilePage() {
-  const { user, token, logout } = useAuth();
+  const { user, logout, loading: authLoading } = useAuth();
   const router = useRouter();
 
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -48,7 +49,7 @@ export default function ProfilePage() {
   /* ================= FETCH PROFILE ================= */
 
   useEffect(() => {
-    if (!token) {
+    if (!user) {
       setLoading(false);
       return;
     }
@@ -57,25 +58,14 @@ export default function ProfilePage() {
       try {
         const res = await fetch(
           "http://localhost:8000/api/profiles/dashboard/",
-          {
-            headers: {
-              Authorization: `Token ${token}`,
-            },
-          }
+          { credentials: "include" }
         );
 
         if (!res.ok) throw new Error("Failed to fetch profile");
 
-        console.log("PROFILE STATUS:", res.status);
         const data = await res.json();
-        console.log("PROFILE DATA:", data);
-
-        // 🔥 backend list OR object — dono handle
-        const profileData = Array.isArray(data) ? data[0] : data;
-
-        setProfile(profileData);
+        setProfile(data);
       } catch (err: any) {
-        console.error("PROFILE FETCH ERROR:", err);
         setError(err.message || "Something went wrong");
       } finally {
         setLoading(false);
@@ -83,19 +73,27 @@ export default function ProfilePage() {
     };
 
     fetchProfile();
-  }, [token]);
+  }, [user]);
 
   /* ================= STATES ================= */
 
+  if (authLoading) {
+    return (
+      <main className="min-h-screen bg-black flex items-center justify-center text-gray-300">
+        Loading...
+      </main>
+    );
+  }
+
   if (!user) {
     return (
-      <main className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="text-center">
-          <User className="w-12 h-12 mx-auto mb-4" />
+      <main className="min-h-screen bg-black flex items-center justify-center text-white">
+        <div className="text-center space-y-4">
+          <User className="w-12 h-12 mx-auto opacity-60" />
           <p>Please login to view your profile.</p>
           <a
             href="/auth/login"
-            className="mt-4 inline-block bg-gradient-to-r from-purple-500 to-pink-500 px-6 py-3 rounded-xl text-white"
+            className="inline-block px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 cursor-pointer"
           >
             Go to Login
           </a>
@@ -106,87 +104,110 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen flex items-center justify-center text-white bg-black">
-        <p className="text-lg">Loading profile...</p>
+      <main className="min-h-screen bg-black flex items-center justify-center text-gray-300">
+        Loading profile...
       </main>
     );
   }
 
   if (error) {
     return (
-      <main className="min-h-screen flex items-center justify-center text-red-400 bg-black">
-        <p>Error: {error}</p>
+      <main className="min-h-screen bg-black flex items-center justify-center text-red-400">
+        {error}
       </main>
     );
   }
 
   if (!profile) {
     return (
-      <main className="min-h-screen flex items-center justify-center text-white bg-black">
-        <p>No profile data found.</p>
+      <main className="min-h-screen bg-black flex items-center justify-center text-gray-400">
+        No profile data found.
       </main>
     );
   }
 
-  /* ================= SAFE DATE ================= */
-
-  const joinedDate =
-    profile.joined_date || profile.date_joined || profile.created_at || null;
+  const joinedDate = profile.joined_date || profile.created_at;
 
   /* ================= UI ================= */
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white px-4 py-8">
-      <div className="max-w-5xl mt-24 mx-auto space-y-8">
-        {/* ===== HEADER ===== */}
+    <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white mt-21 px-4 py-10">
+      <div className="max-w-6xl mx-auto space-y-10 mt-20">
+
+        {/* ===== PROFILE HEADER ===== */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gray-800/50 p-8 rounded-3xl border border-gray-700/30"
+          className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8"
         >
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div className="flex items-center space-x-6">
-              <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center text-3xl font-bold">
-                {profile.name?.charAt(0)?.toUpperCase()}
+          <div className="flex flex-wrap items-center justify-between gap-6">
+
+            {/* LEFT */}
+            <div className="flex items-center gap-6">
+              {/* Avatar */}
+              <div className="w-24 h-24 rounded-2xl overflow-hidden flex items-center justify-center
+                              bg-gradient-to-r from-purple-500 to-pink-500
+                              text-4xl font-bold shadow-lg">
+                {profile.profile_image ? (
+                  <img
+                    src={profile.profile_image}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <span>
+                    {(profile.name || profile.email || "U")
+                      .charAt(0)
+                      .toUpperCase()}
+                  </span>
+                )}
               </div>
 
+              {/* Info */}
               <div>
-                <h1 className="text-3xl font-bold">{profile.name} 👋</h1>
+                <h1 className="text-3xl font-bold">
+                  {profile.name} 👋
+                </h1>
 
-                <p className="text-gray-400 flex items-center space-x-2 mt-2">
+                {profile.bio && (
+                  <p className="text-gray-300 mt-2 max-w-xl">
+                    {profile.bio}
+                  </p>
+                )}
+
+                <p className="text-gray-400 flex items-center gap-2 mt-3 text-sm">
                   <Calendar className="w-4 h-4" />
-                  <span>
-                    Joined:{" "}
-                    {joinedDate ? new Date(joinedDate).toDateString() : "—"}
-                  </span>
+                  Joined {joinedDate && new Date(joinedDate).toDateString()}
                 </p>
 
-                <p className="text-gray-400 text-sm">{profile.email}</p>
+                <p className="text-gray-500 text-sm">{profile.email}</p>
               </div>
             </div>
 
-            <div className="space-x-2">
+            {/* ACTIONS */}
+            <div className="flex gap-3">
               <button
                 onClick={() => router.push("/profile/edit")}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 px-5 py-3 rounded-xl flex items-center space-x-2"
+                className="px-5 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500
+                           flex items-center gap-2 cursor-pointer hover:scale-105 transition"
               >
                 <Edit3 className="w-4 h-4" />
-                <span>Edit Profile</span>
+                Edit
               </button>
 
               <button
                 onClick={logout}
-                className="bg-red-500/20 hover:bg-red-500/30 text-red-400 px-5 py-3 rounded-xl flex items-center space-x-2"
+                className="px-5 py-3 rounded-xl bg-red-500/20 text-red-400
+                           cursor-pointer hover:bg-red-500/30 transition"
               >
                 <LogOut className="w-4 h-4" />
-                <span>Logout</span>
               </button>
             </div>
           </div>
         </motion.div>
 
         {/* ===== STATS ===== */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
             {
               title: "Total Orders",
@@ -214,35 +235,38 @@ export default function ProfilePage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className={`bg-gradient-to-br ${stat.color} p-6 rounded-2xl text-white`}
+                className={`bg-gradient-to-br ${stat.color}
+                            p-6 rounded-2xl shadow-xl`}
               >
-                <Icon className="w-8 h-8 mb-3 opacity-80" />
-                <div className="text-2xl font-bold">{stat.value ?? 0}</div>
+                <Icon className="w-8 h-8 mb-3 opacity-90" />
+                <div className="text-3xl font-bold">{stat.value ?? 0}</div>
                 <div className="text-sm opacity-90">{stat.title}</div>
               </motion.div>
             );
           })}
         </div>
 
-        {/* ===== RECENT ORDERS ===== */}
-        <section className="bg-gray-800/40 p-8 rounded-3xl border border-gray-700/30">
+        {/* ===== ORDERS ===== */}
+        <section className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8">
           <h2 className="text-xl font-semibold mb-6">Recent Orders</h2>
 
-          {!profile.orders || profile.orders.length === 0 ? (
-            <p className="text-gray-400">No orders found.</p>
+          {!profile.orders?.length ? (
+            <p className="text-gray-400">No orders yet.</p>
           ) : (
             <div className="space-y-4">
-              {profile.orders.map((order) => (
+              {profile.orders.map(order => (
                 <motion.div
                   key={order.id}
                   whileHover={{ scale: 1.02 }}
-                  className="bg-gray-700/30 rounded-2xl p-6 border border-gray-600/30"
+                  className="rounded-2xl bg-white/5 border border-white/10 p-6"
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex justify-between items-center">
                     <div>
-                      <h3 className="font-semibold">Order #{order.id}</h3>
+                      <h3 className="font-semibold">
+                        Order #{order.id}
+                      </h3>
                       <p className="text-green-400 text-sm mt-1">
-                        Status: {order.status}
+                        {order.status}
                       </p>
                     </div>
 
@@ -250,9 +274,9 @@ export default function ProfilePage() {
                       <div className="text-xl font-bold">
                         ₹{order.total_price}
                       </div>
-                      <button className="text-purple-400 text-sm mt-1 flex items-center space-x-1">
+                      <button className="text-purple-400 text-sm mt-1 flex items-center gap-1 cursor-pointer">
                         <Eye className="w-3 h-3" />
-                        <span>View Details</span>
+                        View
                       </button>
                     </div>
                   </div>
