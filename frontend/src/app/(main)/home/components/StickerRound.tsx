@@ -22,7 +22,7 @@ export default function StickerRound() {
     async function fetchPopular() {
       try {
         const res = await fetch(
-          "http://127.0.0.1:8000/api/stickers/?is_popular=true&limit=10"
+          `${process.env.NEXT_PUBLIC_API_URL}/stickers/?is_popular=true&limit=10`
         );
         const data = await res.json();
         setStickers(data);
@@ -94,7 +94,6 @@ export default function StickerRound() {
         Popular
       </h1>
       <div className="relative w-full h-[100vh] bg-black flex flex-col items-center justify-center overflow-hidden">
-        
         <h2 className="text-4xl font-bold mb-8 bg-gradient-to-r from-cyan-400 to-purple-500 text-transparent bg-clip-text">
           MAKE IT YOURS
         </h2>

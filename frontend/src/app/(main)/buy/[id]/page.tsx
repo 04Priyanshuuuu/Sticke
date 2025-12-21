@@ -11,17 +11,18 @@ const BuyPage = () => {
   const [quantity, setQuantity] = useState(1);
   const addAlert = useCartStore((s) => s.addAlert);
 
-
   useEffect(() => {
     if (!id) return;
     const fetchSticker = async () => {
-      const res = await fetch(`http://localhost:8000/api/stickers/${id}/`);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/stickers/${id}/`
+      );
       const data = await res.json();
       setSticker(data);
 
       // fetch related stickers
       const relatedRes = await fetch(
-        `http://localhost:8000/api/stickers/?search=${data.category}`
+        `${process.env.NEXT_PUBLIC_API_URL}/stickers/?search=${data.category}`
       );
       const relatedData = await relatedRes.json();
       setRelated(relatedData.filter((s) => s.id !== data.id));
@@ -39,7 +40,7 @@ const BuyPage = () => {
 
     try {
       const profileRes = await fetch(
-        "http://localhost:8000/api/auth/profile/",
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/profile/`,
         {
           credentials: "include",
         }
@@ -54,16 +55,19 @@ const BuyPage = () => {
         return;
       }
 
-      const addRes = await fetch("http://localhost:8000/api/cart/add/", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sticker_id: id,
-          size: "M",
-          quantity: 1,
-        }),
-      });
+      const addRes = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/cart/add/`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sticker_id: id,
+            size: "M",
+            quantity: 1,
+          }),
+        }
+      );
 
       const data = await addRes.json();
 

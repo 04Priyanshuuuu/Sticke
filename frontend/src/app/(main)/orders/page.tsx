@@ -22,9 +22,12 @@ export default function OrdersPage() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const userRes = await fetch("http://localhost:8000/api/auth/profile/", {
-          credentials: "include",
-        });
+        const userRes = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/profile/`,
+          {
+            credentials: "include",
+          }
+        );
         if (!userRes.ok) {
           setUser(null);
           setLoading(false);
@@ -33,9 +36,12 @@ export default function OrdersPage() {
         const userData = await userRes.json();
         setUser(userData);
 
-        const ordersRes = await fetch("http://localhost:8000/api/orders/", {
-          credentials: "include",
-        });
+        const ordersRes = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/orders/`,
+          {
+            credentials: "include",
+          }
+        );
         const ordersData = await ordersRes.json();
         setOrders(ordersData || []);
       } catch (err) {
@@ -52,7 +58,7 @@ export default function OrdersPage() {
     if (!confirm("Kya aap sure hain? Ye order cancel ho jaayega.")) return;
     try {
       const res = await fetch(
-        `http://localhost:8000/api/orders/${orderId}/cancel/`,
+        `${process.env.NEXT_PUBLIC_API_URL}/orders/${orderId}/cancel/`,
         {
           method: "POST",
           credentials: "include",

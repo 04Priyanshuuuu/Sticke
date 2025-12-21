@@ -86,7 +86,7 @@ export function DraggableCard() {
     }))
   );
 
-  const BACKEND_API = "http://127.0.0.1:8000/api/stickers/?limit=" + ITEM_COUNT; // change if needed
+  const BACKEND_API = `${process.env.NEXT_PUBLIC_API_URL}/stickers/?limit=${ITEM_COUNT}`; // change if needed
 
   /** Fetch images from Django backend.
    *  Expected response: array of objects with at least { image: string, name?: string }

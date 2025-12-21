@@ -57,7 +57,7 @@ export default function ProfilePage() {
     const fetchProfile = async () => {
       try {
         const res = await fetch(
-          "http://localhost:8000/api/profiles/dashboard/",
+          `${process.env.NEXT_PUBLIC_API_URL}/profiles/dashboard/`,
           { credentials: "include" }
         );
 
@@ -133,7 +133,6 @@ export default function ProfilePage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white mt-21 px-4 py-10">
       <div className="max-w-6xl mx-auto space-y-10 mt-20">
-
         {/* ===== PROFILE HEADER ===== */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -141,13 +140,14 @@ export default function ProfilePage() {
           className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8"
         >
           <div className="flex flex-wrap items-center justify-between gap-6">
-
             {/* LEFT */}
             <div className="flex items-center gap-6">
               {/* Avatar */}
-              <div className="w-24 h-24 rounded-2xl overflow-hidden flex items-center justify-center
+              <div
+                className="w-24 h-24 rounded-2xl overflow-hidden flex items-center justify-center
                               bg-gradient-to-r from-purple-500 to-pink-500
-                              text-4xl font-bold shadow-lg">
+                              text-4xl font-bold shadow-lg"
+              >
                 {profile.profile_image ? (
                   <img
                     src={profile.profile_image}
@@ -165,14 +165,10 @@ export default function ProfilePage() {
 
               {/* Info */}
               <div>
-                <h1 className="text-3xl font-bold">
-                  {profile.name} 👋
-                </h1>
+                <h1 className="text-3xl font-bold">{profile.name} 👋</h1>
 
                 {profile.bio && (
-                  <p className="text-gray-300 mt-2 max-w-xl">
-                    {profile.bio}
-                  </p>
+                  <p className="text-gray-300 mt-2 max-w-xl">{profile.bio}</p>
                 )}
 
                 <p className="text-gray-400 flex items-center gap-2 mt-3 text-sm">
@@ -254,7 +250,7 @@ export default function ProfilePage() {
             <p className="text-gray-400">No orders yet.</p>
           ) : (
             <div className="space-y-4">
-              {profile.orders.map(order => (
+              {profile.orders.map((order) => (
                 <motion.div
                   key={order.id}
                   whileHover={{ scale: 1.02 }}
@@ -262,9 +258,7 @@ export default function ProfilePage() {
                 >
                   <div className="flex justify-between items-center">
                     <div>
-                      <h3 className="font-semibold">
-                        Order #{order.id}
-                      </h3>
+                      <h3 className="font-semibold">Order #{order.id}</h3>
                       <p className="text-green-400 text-sm mt-1">
                         {order.status}
                       </p>

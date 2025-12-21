@@ -28,9 +28,12 @@ export default function CartPage() {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const userRes = await fetch("http://localhost:8000/api/auth/profile/", {
-          credentials: "include",
-        });
+        const userRes = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/auth/profile/`,
+          {
+            credentials: "include",
+          }
+        );
 
         if (!userRes.ok) {
           setUser(null);
@@ -41,10 +44,13 @@ export default function CartPage() {
         const userData = await userRes.json();
         setUser(userData);
 
-        const cartRes = await fetch("http://localhost:8000/api/cart/", {
-          method: "GET",
-          credentials: "include",
-        });
+        const cartRes = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/cart/`,
+          {
+            method: "GET",
+            credentials: "include",
+          }
+        );
 
         if (!cartRes.ok) throw new Error("Failed to fetch cart");
         const cartData = await cartRes.json();
@@ -67,7 +73,7 @@ export default function CartPage() {
       const category = cart[0]?.sticker?.category;
       if (!category) return;
 
-      fetch(`http://localhost:8000/api/stickers/?search=${category}`)
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/stickers/?search=${category}`)
         .then((res) => res.json())
         .then((data) => {
           if (Array.isArray(data)) setRelatedStickers(data);
@@ -83,7 +89,7 @@ export default function CartPage() {
 
     try {
       const res = await fetch(
-        `http://localhost:8000/api/cart/update/${itemId}/`,
+        `${process.env.NEXT_PUBLIC_API_URL}/cart/update/${itemId}/`,
         {
           method: "PATCH",
           credentials: "include",
@@ -109,7 +115,7 @@ export default function CartPage() {
   const removeItem = async (itemId: number) => {
     try {
       const res = await fetch(
-        `http://localhost:8000/api/cart/remove/${itemId}/`,
+        `${process.env.NEXT_PUBLIC_API_URL}/cart/remove/${itemId}/`,
         {
           method: "DELETE",
           credentials: "include",

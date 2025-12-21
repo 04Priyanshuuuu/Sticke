@@ -12,15 +12,18 @@ export default function CheckoutPage() {
   const handlePlaceOrder = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:8000/api/orders/create/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          payment_method: paymentMethod,
-          shipping_address: address,
-        }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/orders/create/`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            payment_method: paymentMethod,
+            shipping_address: address,
+          }),
+        }
+      );
 
       if (!res.ok) throw new Error("Failed to place order");
 
@@ -65,11 +68,7 @@ export default function CheckoutPage() {
             </label>
 
             <label className="flex items-center space-x-3 opacity-50 cursor-not-allowed">
-              <input
-                type="radio"
-                disabled
-                className="accent-purple-500"
-              />
+              <input type="radio" disabled className="accent-purple-500" />
               <span>Online Payment (coming soon)</span>
             </label>
           </div>

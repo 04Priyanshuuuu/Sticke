@@ -20,16 +20,19 @@ export default function SignupPage() {
     }
 
     try {
-      const res = await fetch("http://localhost:8000/api/auth/register/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: fullName,
-          email,
-          password,
-          password2: confirmPassword,
-        }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/register/`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: fullName,
+            email,
+            password,
+            password2: confirmPassword,
+          }),
+        }
+      );
 
       if (res.ok) {
         setSuccess("Account created successfully");
@@ -45,7 +48,6 @@ export default function SignupPage() {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-[#0b0b0f] flex items-center justify-center">
-
       {/* BLUE BLOB */}
       <div className="absolute -top-24 -left-24 w-[420px] h-[420px] bg-blue-500/60 rounded-full blur-[140px]" />
 
@@ -53,20 +55,38 @@ export default function SignupPage() {
       <div className="absolute -bottom-24 -right-24 w-[420px] h-[420px] bg-orange-500/60 rounded-full blur-[140px]" />
 
       {/* GLASS CARD */}
-      <div className="relative z-10 w-[420px] rounded-2xl border border-white/10
+      <div
+        className="relative z-10 w-[420px] rounded-2xl border border-white/10
                       bg-white/10 backdrop-blur-xl p-8
-                      shadow-[0_0_50px_rgba(0,0,0,0.6)] text-white">
-
+                      shadow-[0_0_50px_rgba(0,0,0,0.6)] text-white"
+      >
         <h2 className="text-3xl font-bold">Create Account</h2>
-        <p className="text-sm text-gray-300 mt-1">
-          Join the Sticke experience
-        </p>
+        <p className="text-sm text-gray-300 mt-1">Join the Sticke experience</p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-5">
-          <Input label="Full Name" value={fullName} onChange={(e:any)=>setFullName(e.target.value)} />
-          <Input label="Email" type="email" value={email} onChange={(e:any)=>setEmail(e.target.value)} />
-          <Input label="Password" type="password" value={password} onChange={(e:any)=>setPassword(e.target.value)} />
-          <Input label="Confirm Password" type="password" value={confirmPassword} onChange={(e:any)=>setConfirmPassword(e.target.value)} />
+          <Input
+            label="Full Name"
+            value={fullName}
+            onChange={(e: any) => setFullName(e.target.value)}
+          />
+          <Input
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e: any) => setEmail(e.target.value)}
+          />
+          <Input
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e: any) => setPassword(e.target.value)}
+          />
+          <Input
+            label="Confirm Password"
+            type="password"
+            value={confirmPassword}
+            onChange={(e: any) => setConfirmPassword(e.target.value)}
+          />
 
           {error && <p className="text-red-400 text-sm">{error}</p>}
           {success && <p className="text-green-400 text-sm">{success}</p>}

@@ -12,11 +12,11 @@ export default function EditProfilePage() {
   const [image, setImage] = useState<File | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/profiles/me/", {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/profiles/me/`, {
       credentials: "include",
     })
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         setDisplayName(data.display_name || "");
         setBio(data.bio || "");
         setLocation(data.location || "");
@@ -33,7 +33,7 @@ export default function EditProfilePage() {
     formData.append("location", location);
     if (image) formData.append("profile_image", image);
 
-    await fetch("http://localhost:8000/api/profiles/me/", {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profiles/me/`, {
       method: "PATCH",
       credentials: "include",
       body: formData,

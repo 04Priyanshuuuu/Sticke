@@ -25,7 +25,7 @@ export default function ResetPasswordPage({
 
     try {
       const res = await fetch(
-        `http://localhost:8000/api/auth/reset-password/${uid}/${token}/`,
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/reset-password/${uid}/${token}/`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -53,7 +53,6 @@ export default function ResetPasswordPage({
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-[#0b0b0f] flex items-center justify-center">
-
       {/* BLUE BLOB */}
       <div className="absolute -top-24 -left-24 w-[420px] h-[420px] bg-blue-500/60 rounded-full blur-[140px]" />
 
@@ -111,18 +110,10 @@ export default function ResetPasswordPage({
   );
 }
 
-function Input({
-  label,
-  type = "text",
-  placeholder,
-  value,
-  onChange,
-}: any) {
+function Input({ label, type = "text", placeholder, value, onChange }: any) {
   return (
     <div>
-      <label className="block text-sm mb-1 text-gray-300">
-        {label}
-      </label>
+      <label className="block text-sm mb-1 text-gray-300">{label}</label>
       <input
         type={type}
         value={value}

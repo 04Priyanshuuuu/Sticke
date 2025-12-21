@@ -41,17 +41,23 @@ export default function StickerSlider() {
       setError(null);
 
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/stickers/?ordering=-created_at&limit=10");
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/stickers/?ordering=-created_at&limit=10`
+        );
         const text = await res.text();
         if (!res.ok) throw new Error(`${res.status} ${text}`);
 
         const parsed = JSON.parse(text);
-        const data: RawSticker[] = Array.isArray(parsed) ? parsed : parsed.results ?? [];
+        const data: RawSticker[] = Array.isArray(parsed)
+          ? parsed
+          : parsed.results ?? [];
 
         const mapped = await Promise.all(
           data.slice(0, 10).map(async (it) => {
             const imgUrl = it.image ?? it.img ?? it.image_url ?? "";
-            const orientation = imgUrl ? await detectOrientation(imgUrl) : "landscape";
+            const orientation = imgUrl
+              ? await detectOrientation(imgUrl)
+              : "landscape";
 
             return {
               id: it.id,
@@ -86,7 +92,10 @@ export default function StickerSlider() {
         </h1>
         <div className="flex gap-4 overflow-x-scroll p-5">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="w-[250px] h-[350px] bg-gray-300 animate-pulse rounded-lg" />
+            <div
+              key={i}
+              className="w-[250px] h-[350px] bg-gray-300 animate-pulse rounded-lg"
+            />
           ))}
         </div>
       </div>
@@ -146,16 +155,21 @@ export default function StickerSlider() {
             </span>
 
             {/* HOVER OVERLAY LIKE YOUR StickerHover */}
-            <div className="
+            <div
+              className="
               absolute inset-0 bg-black/0 group-hover:bg-black/50 
               opacity-0 group-hover:opacity-100 
               transition-all duration-300 z-10
               flex flex-col justify-between p-3 pointer-events-none group-hover:pointer-events-auto
-            ">
+            "
+            >
               {/* Top-right buttons */}
               <div className="flex flex-col gap-2 self-end">
                 <button
-                  onClick={(e) => { e.stopPropagation(); alert(`Add to cart ${sticker.id}`); }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    alert(`Add to cart ${sticker.id}`);
+                  }}
                   className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow hover:scale-110 transition"
                 >
                   <Plus className="w-5 h-5 text-black" />
@@ -164,7 +178,9 @@ export default function StickerSlider() {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    navigator.clipboard.writeText(location.origin + `/buy/${sticker.id}`);
+                    navigator.clipboard.writeText(
+                      location.origin + `/buy/${sticker.id}`
+                    );
                     alert("Link Copied!");
                   }}
                   className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow hover:scale-110 transition"
@@ -180,14 +196,16 @@ export default function StickerSlider() {
                 </span>
 
                 <button
-                  onClick={(e) => { e.stopPropagation(); router.push(`/buy/${sticker.id}`); }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push(`/buy/${sticker.id}`);
+                  }}
                   className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
                 >
                   Buy
                 </button>
               </div>
             </div>
-
           </div>
         ))}
       </div>

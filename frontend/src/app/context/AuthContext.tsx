@@ -9,9 +9,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const fetchUser = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/auth/profile/", {
-        credentials: "include", // 🔥 COOKIE JWT
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/profile/`,
+        {
+          credentials: "include", // 🔥 COOKIE JWT
+        }
+      );
 
       if (!res.ok) {
         setUser(null);
@@ -34,7 +37,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = async () => {
     try {
-      await fetch("http://localhost:8000/api/auth/logout/", {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout/`, {
         method: "POST",
         credentials: "include",
       });

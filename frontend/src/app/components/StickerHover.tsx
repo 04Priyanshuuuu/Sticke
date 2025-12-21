@@ -35,7 +35,7 @@ const StickerHover: React.FC<Props> = ({
 
     try {
       const profileRes = await fetch(
-        "http://localhost:8000/api/auth/profile/",
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/profile/`,
         {
           credentials: "include",
         }
@@ -50,16 +50,19 @@ const StickerHover: React.FC<Props> = ({
         return;
       }
 
-      const addRes = await fetch("http://localhost:8000/api/cart/add/", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sticker_id: id,
-          size: "M",
-          quantity: 1,
-        }),
-      });
+      const addRes = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/cart/add/`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sticker_id: id,
+            size: "M",
+            quantity: 1,
+          }),
+        }
+      );
 
       const data = await addRes.json();
 

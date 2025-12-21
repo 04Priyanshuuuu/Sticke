@@ -13,17 +13,20 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:8000/api/auth/login/", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/login/`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
       if (res.ok) {
         try {
           const profileRes = await fetch(
-            "http://localhost:8000/api/auth/profile/",
+            `${process.env.NEXT_PUBLIC_API_URL}/auth/profile/`,
             { credentials: "include" }
           );
           if (profileRes.ok) {
@@ -45,7 +48,6 @@ export default function LoginPage() {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-[#0b0b0f] flex items-center justify-center">
-
       {/* BLUE BLOB */}
       <div className="absolute -top-24 -left-24 w-[420px] h-[420px] bg-blue-500/60 rounded-full blur-[140px]" />
 
@@ -69,7 +71,7 @@ export default function LoginPage() {
             type="email"
             placeholder="you@example.com"
             value={email}
-            onChange={(e:any)=>setEmail(e.target.value)}
+            onChange={(e: any) => setEmail(e.target.value)}
           />
 
           <Input
@@ -77,12 +79,10 @@ export default function LoginPage() {
             type="password"
             placeholder="••••••••"
             value={password}
-            onChange={(e:any)=>setPassword(e.target.value)}
+            onChange={(e: any) => setPassword(e.target.value)}
           />
 
-          {error && (
-            <p className="text-red-400 text-sm">{error}</p>
-          )}
+          {error && <p className="text-red-400 text-sm">{error}</p>}
 
           <button
             type="submit"
@@ -103,10 +103,7 @@ export default function LoginPage() {
 
           <div>
             Don&apos;t have an account?{" "}
-            <a
-              href="/auth/signUp"
-              className="text-white underline"
-            >
+            <a href="/auth/signUp" className="text-white underline">
               Create one
             </a>
           </div>
@@ -116,18 +113,10 @@ export default function LoginPage() {
   );
 }
 
-function Input({
-  label,
-  type = "text",
-  placeholder,
-  value,
-  onChange,
-}: any) {
+function Input({ label, type = "text", placeholder, value, onChange }: any) {
   return (
     <div>
-      <label className="block text-sm mb-1 text-gray-300">
-        {label}
-      </label>
+      <label className="block text-sm mb-1 text-gray-300">{label}</label>
       <input
         type={type}
         value={value}

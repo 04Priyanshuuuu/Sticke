@@ -12,11 +12,14 @@ export default function ForgotPasswordPage() {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:8000/api/auth/forgot-password/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/forgot-password/`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        }
+      );
 
       if (res.ok) {
         setSuccess("Password reset link sent to your email!");
@@ -34,7 +37,6 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-[#0b0b0f] flex items-center justify-center">
-
       {/* BLUE BLOB */}
       <div className="absolute -top-24 -left-24 w-[420px] h-[420px] bg-blue-500/60 rounded-full blur-[140px]" />
 
@@ -58,7 +60,7 @@ export default function ForgotPasswordPage() {
             type="email"
             placeholder="you@example.com"
             value={email}
-            onChange={(e:any) => setEmail(e.target.value)}
+            onChange={(e: any) => setEmail(e.target.value)}
           />
 
           {error && <p className="text-red-400 text-sm">{error}</p>}
@@ -84,18 +86,10 @@ export default function ForgotPasswordPage() {
   );
 }
 
-function Input({
-  label,
-  type = "text",
-  placeholder,
-  value,
-  onChange,
-}: any) {
+function Input({ label, type = "text", placeholder, value, onChange }: any) {
   return (
     <div>
-      <label className="block text-sm mb-1 text-gray-300">
-        {label}
-      </label>
+      <label className="block text-sm mb-1 text-gray-300">{label}</label>
       <input
         type={type}
         value={value}

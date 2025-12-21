@@ -25,11 +25,14 @@ export default function MakeYourOwnSticker() {
     formData.append("image", file);
 
     try {
-      const res = await fetch("http://localhost:8000/api/stickers/custom-stickers/", {
-        method: "POST",
-        body: formData,
-        credentials: "include",
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/stickers/custom-stickers/`,
+        {
+          method: "POST",
+          body: formData,
+          credentials: "include",
+        }
+      );
 
       if (!res.ok) throw new Error("Upload failed");
 
