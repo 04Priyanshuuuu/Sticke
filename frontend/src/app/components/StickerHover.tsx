@@ -145,7 +145,7 @@ const StickerHover: React.FC<Props> = ({
       className={`relative group w-64 h-80 rounded-2xl overflow-hidden shadow-md hover:shadow-lg bg-gray-50 cursor-pointer ${className}`}
     >
       <motion.img
-        src={img}
+        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${img}`}
         alt={name}
         initial={{ scale: 1 }}
         whileHover={{ scale: 1.05 }}

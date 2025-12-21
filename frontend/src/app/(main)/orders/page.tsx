@@ -171,7 +171,7 @@ export default function OrdersPage() {
                         src={
                           order.items?.[0]?.sticker?.image?.startsWith("http")
                             ? order.items[0].sticker.image
-                            : `http://localhost:8000${
+                            : `${process.env.NEXT_PUBLIC_BACKEND_URL}${
                                 order.items?.[0]?.sticker?.image || ""
                               }`
                         }

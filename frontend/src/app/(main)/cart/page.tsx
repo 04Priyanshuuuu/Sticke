@@ -215,7 +215,7 @@ export default function CartPage() {
                         src={
                           item.sticker?.image?.startsWith("http")
                             ? item.sticker.image
-                            : `http://localhost:8000${
+                            : `${process.env.NEXT_PUBLIC_BACKEND_URL}${
                                 item.sticker?.image || ""
                               }`
                         }

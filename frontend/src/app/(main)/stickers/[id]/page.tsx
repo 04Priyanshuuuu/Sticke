@@ -22,7 +22,7 @@ export default function StickerDetail() {
   return (
     <div className="p-10 flex flex-col md:flex-row items-center gap-10">
       <img
-        src={sticker.img}
+        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${sticker.img}`}
         alt={sticker.name}
         className="w-80 h-80 object-cover rounded-xl shadow-md"
       />

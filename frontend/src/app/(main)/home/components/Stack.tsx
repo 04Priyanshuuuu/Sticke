@@ -201,7 +201,7 @@ export function DraggableCard() {
             className={item.className}
           >
             <img
-              src={item.image}
+              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${item.image}`}
               alt={item.title}
               className="pointer-events-none relative z-10 h-80 w-80 object-cover"
             />

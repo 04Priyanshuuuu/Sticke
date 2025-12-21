@@ -115,7 +115,7 @@ export default function StickerRound() {
               transition-transform duration-300"
               >
                 <img
-                  src={sticker.image}
+                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${sticker.image}`}
                   alt={sticker.name}
                   className="w-full h-[160px] object-cover rounded-md"
                 />

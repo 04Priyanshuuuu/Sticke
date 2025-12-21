@@ -5,7 +5,10 @@ const collections = [
   { name: "Anime", img: "https://source.unsplash.com/600x400/?anime" },
   { name: "Quotes", img: "https://source.unsplash.com/600x400/?quotes,poster" },
   { name: "Aesthetic", img: "https://source.unsplash.com/600x400/?aesthetic" },
-  { name: "Tech", img: "https://source.unsplash.com/600x400/?technology,design" },
+  {
+    name: "Tech",
+    img: "https://source.unsplash.com/600x400/?technology,design",
+  },
   { name: "Dark Humor", img: "https://source.unsplash.com/600x400/?dark,art" },
 ];
 
@@ -24,7 +27,7 @@ export default function PopularCollections() {
             className="relative flex-none w-[250px] h-[300px] rounded-2xl overflow-hidden group"
           >
             <img
-              src={c.img}
+              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${c.img}`}
               alt={c.name}
               className="w-full h-full object-cover group-hover:opacity-70 transition"
             />

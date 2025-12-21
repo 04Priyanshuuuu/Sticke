@@ -131,7 +131,7 @@ export default function StickerSlider() {
             {/* IMAGE */}
             <div className="w-full h-full flex items-center justify-center bg-black">
               <img
-                src={sticker.img}
+                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${sticker.img}`}
                 alt={sticker.title}
                 className={
                   "max-w-full max-h-full rounded-md transition-transform duration-300 " +

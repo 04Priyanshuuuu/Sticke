@@ -150,7 +150,7 @@ export default function ProfilePage() {
               >
                 {profile.profile_image ? (
                   <img
-                    src={profile.profile_image}
+                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${profile.profile_image}`}
                     alt="Profile"
                     className="w-full h-full object-cover"
                   />

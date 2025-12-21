@@ -62,7 +62,7 @@ const ImageComponent = ({ card }: { card: Card }) => {
   return (
     <motion.img
       layoutId={`image-${card.id}-image`}
-      src={card.thumbnail}
+      src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${card.thumbnail}`}
       height="500"
       width="500"
       className={cn(
